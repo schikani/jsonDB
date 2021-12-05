@@ -64,8 +64,6 @@ class jsonDB:
 
     def read(self, key=None, value=None, ev=False):
 
-        keys = []
-
         if key is not None:
             for k, v in self._db.items():
                     if k == str(key):
@@ -74,15 +72,16 @@ class jsonDB:
                         return v
 
         elif value is not None:
+            keys = []
             for k, v in self._db.items():
                 if v == value:
                     if ev:
                         keys.append(eval(k))
                     else:
                         keys.append(k)
-        
-        if len(keys) > 0:
-            return keys
+
+            if len(keys) > 0:
+                return keys
         
         return None
 
@@ -94,6 +93,18 @@ class jsonDB:
 
     def items(self):
         return dict(self._db.items())
+    
+    def exists(self, key = None, value = None):
+        if key is not None:
+            if self.read(str(key)):
+                return True
+        
+        elif value is not None:
+            for k, v in self._db.items():
+                if v == value: 
+                    return True
+
+        return False
 
     def clear_all(self):
         self._db.clear()
